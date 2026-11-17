@@ -81,6 +81,7 @@ void TebConfig::declareParameters(const nav2_util::LifecycleNode::SharedPtr nh, 
   declare_parameter_if_not_declared(nh, name + "." + "wheelbase", rclcpp::ParameterValue(robot.wheelbase));
   declare_parameter_if_not_declared(nh, name + "." + "cmd_angle_instead_rotvel", rclcpp::ParameterValue(robot.cmd_angle_instead_rotvel));
   declare_parameter_if_not_declared(nh, name + "." + "is_footprint_dynamic", rclcpp::ParameterValue(robot.is_footprint_dynamic));
+  declare_parameter_if_not_declared(nh, name + ".use_proportional_saturation", rclcpp::ParameterValue(robot.use_proportional_saturation));
 
   // GoalTolerance
   declare_parameter_if_not_declared(nh, name + "." + "free_goal_vel", rclcpp::ParameterValue(goal_tolerance.free_goal_vel));
@@ -208,6 +209,7 @@ void TebConfig::loadRosParamFromNodeHandle(const nav2_util::LifecycleNode::Share
   nh->get_parameter_or(name + "." + "wheelbase", robot.wheelbase, robot.wheelbase);
   nh->get_parameter_or(name + "." + "cmd_angle_instead_rotvel", robot.cmd_angle_instead_rotvel, robot.cmd_angle_instead_rotvel);
   nh->get_parameter_or(name + "." + "is_footprint_dynamic", robot.is_footprint_dynamic, robot.is_footprint_dynamic);
+  nh->get_parameter_or(name + ".use_proportional_saturation", robot.use_proportional_saturation, robot.use_proportional_saturation);
   
   // GoalTolerance
   nh->get_parameter_or(name + "." + "free_goal_vel", goal_tolerance.free_goal_vel, goal_tolerance.free_goal_vel);
@@ -681,6 +683,8 @@ rcl_interfaces::msg::SetParametersResult
       // Robot
       else if (name == node_name + ".cmd_angle_instead_rotvel") {
         robot.cmd_angle_instead_rotvel = parameter.as_bool();
+      } else if (name == node_name + ".use_proportional_saturation") {
+        robot.use_proportional_saturation = parameter.as_bool();
       } else if (name == node_name + ".is_footprint_dynamic") {
         robot.is_footprint_dynamic = parameter.as_bool();
       }

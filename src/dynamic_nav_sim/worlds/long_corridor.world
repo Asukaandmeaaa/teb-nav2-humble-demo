@@ -1,0 +1,802 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+  <world name="long_corridor">
+    <gravity>0 0 -9.81</gravity>
+    <physics name="default_physics" type="ode">
+      <max_step_size>0.002</max_step_size>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>.8 .8 .8 1</diffuse>
+      <direction>-.5 .2 -1</direction>
+    </light>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="ground">
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>50 30</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="ground_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>50 30</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="north">
+      <static>true</static>
+      <pose>0 2.5 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="north_collision">
+          <geometry>
+            <box>
+              <size>40.4 0.2 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="north_visual">
+          <geometry>
+            <box>
+              <size>40.4 0.2 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="north_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>north_collision</collision>
+          </contact>
+          <plugin name="north_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="south">
+      <static>true</static>
+      <pose>0 -2.5 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="south_collision">
+          <geometry>
+            <box>
+              <size>40.4 0.2 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="south_visual">
+          <geometry>
+            <box>
+              <size>40.4 0.2 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="south_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>south_collision</collision>
+          </contact>
+          <plugin name="south_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="east">
+      <static>true</static>
+      <pose>20.1 0 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="east_collision">
+          <geometry>
+            <box>
+              <size>0.2 5.2 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="east_visual">
+          <geometry>
+            <box>
+              <size>0.2 5.2 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="east_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>east_collision</collision>
+          </contact>
+          <plugin name="east_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="west">
+      <static>true</static>
+      <pose>-20.1 0 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="west_collision">
+          <geometry>
+            <box>
+              <size>0.2 5.2 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="west_visual">
+          <geometry>
+            <box>
+              <size>0.2 5.2 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="west_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>west_collision</collision>
+          </contact>
+          <plugin name="west_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="crate_entry">
+      <static>true</static>
+      <pose>-16.2 1.0 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="crate_entry_collision">
+          <geometry>
+            <box>
+              <size>0.8 1.2 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="crate_entry_visual">
+          <geometry>
+            <box>
+              <size>0.8 1.2 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.8 .55 .15 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="crate_entry_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>crate_entry_collision</collision>
+          </contact>
+          <plugin name="crate_entry_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="crate_middle">
+      <static>true</static>
+      <pose>-6.0 -0.6 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="crate_middle_collision">
+          <geometry>
+            <box>
+              <size>1.0 2.0 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="crate_middle_visual">
+          <geometry>
+            <box>
+              <size>1.0 2.0 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.8 .55 .15 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="crate_middle_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>crate_middle_collision</collision>
+          </contact>
+          <plugin name="crate_middle_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="crate_exit">
+      <static>true</static>
+      <pose>10.5 0.55 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="crate_exit_collision">
+          <geometry>
+            <box>
+              <size>1.0 2.2 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="crate_exit_visual">
+          <geometry>
+            <box>
+              <size>1.0 2.2 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.8 .55 .15 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="crate_exit_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>crate_exit_collision</collision>
+          </contact>
+          <plugin name="crate_exit_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_1_south">
+      <static>true</static>
+      <pose>-13.5 -1.585 1.1 0 0 0</pose>
+      <link name="body">
+        <collision name="passage_1_south_collision">
+          <geometry>
+            <box>
+              <size>0.16 1.63 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_1_south_visual">
+          <geometry>
+            <box>
+              <size>0.16 1.63 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_1_south_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_1_south_collision</collision>
+          </contact>
+          <plugin name="passage_1_south_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_1_north">
+      <static>true</static>
+      <pose>-13.5 1.2349999999999999 1.1 0 0 0</pose>
+      <link name="body">
+        <collision name="passage_1_north_collision">
+          <geometry>
+            <box>
+              <size>0.16 2.33 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_1_north_visual">
+          <geometry>
+            <box>
+              <size>0.16 2.33 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_1_north_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_1_north_collision</collision>
+          </contact>
+          <plugin name="passage_1_north_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_2_south">
+      <static>true</static>
+      <pose>0.0 -1.275 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="passage_2_south_collision">
+          <geometry>
+            <box>
+              <size>2.0 2.25 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_2_south_visual">
+          <geometry>
+            <box>
+              <size>2.0 2.25 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_2_south_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_2_south_collision</collision>
+          </contact>
+          <plugin name="passage_2_south_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_2_north">
+      <static>true</static>
+      <pose>0.0 1.675 0.6 0 0 0</pose>
+      <link name="body">
+        <collision name="passage_2_north_collision">
+          <geometry>
+            <box>
+              <size>2.0 1.4499999999999997 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_2_north_visual">
+          <geometry>
+            <box>
+              <size>2.0 1.4499999999999997 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_2_north_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_2_north_collision</collision>
+          </contact>
+          <plugin name="passage_2_north_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_3_south">
+      <static>true</static>
+      <pose>15.0 -1.56 1.1 0 0 0</pose>
+      <link name="body">
+        <collision name="passage_3_south_collision">
+          <geometry>
+            <box>
+              <size>0.16 1.68 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_3_south_visual">
+          <geometry>
+            <box>
+              <size>0.16 1.68 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_3_south_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_3_south_collision</collision>
+          </contact>
+          <plugin name="passage_3_south_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_3_north">
+      <static>true</static>
+      <pose>15.0 1.26 1.1 0 0 0</pose>
+      <link name="body">
+        <collision name="passage_3_north_collision">
+          <geometry>
+            <box>
+              <size>0.16 2.28 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_3_north_visual">
+          <geometry>
+            <box>
+              <size>0.16 2.28 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.55 .6 .65 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_3_north_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_3_north_collision</collision>
+          </contact>
+          <plugin name="passage_3_north_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_1_door_leaf">
+      <static>true</static>
+      <pose>-13.006380743734873 -0.6970677653798892 1.025 0 0 0.17453292519943303</pose>
+      <link name="body">
+        <collision name="passage_1_door_leaf_collision">
+          <geometry>
+            <box>
+              <size>0.84 0.035 2.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_1_door_leaf_visual">
+          <geometry>
+            <box>
+              <size>0.84 0.035 2.05</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.22 .55 .52 1</diffuse>
+          </material>
+        </visual>
+        <visual name="handle">
+          <pose>0.294 -.045 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.12 .035 .025</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.2 .2 .22 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_1_door_leaf_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_1_door_leaf_collision</collision>
+          </contact>
+          <plugin name="passage_1_door_leaf_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_3_door_leaf">
+      <static>true</static>
+      <pose>14.506380743734873 -0.6470677653798893 1.025 0 0 2.9670597283903604</pose>
+      <link name="body">
+        <collision name="passage_3_door_leaf_collision">
+          <geometry>
+            <box>
+              <size>0.84 0.035 2.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="passage_3_door_leaf_visual">
+          <geometry>
+            <box>
+              <size>0.84 0.035 2.05</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.22 .55 .52 1</diffuse>
+          </material>
+        </visual>
+        <visual name="handle">
+          <pose>0.294 -.045 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.12 .035 .025</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.2 .2 .22 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="passage_3_door_leaf_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>passage_3_door_leaf_collision</collision>
+          </contact>
+          <plugin name="passage_3_door_leaf_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/static_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="passage_1_frame">
+      <static>true</static>
+      <link name="frame">
+        <visual name="jamb_-1">
+          <pose>-13.5 -0.79 1.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 .04 2.1</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.15 .18 .2 1</diffuse>
+          </material>
+        </visual>
+        <visual name="jamb_1">
+          <pose>-13.5 0.09000000000000002 1.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 .04 2.1</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.15 .18 .2 1</diffuse>
+          </material>
+        </visual>
+        <visual name="lintel_visual">
+          <pose>-13.5 -0.35 2.125 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 0.9199999999999999 .05</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.15 .18 .2 1</diffuse>
+          </material>
+        </visual>
+        <collision name="lintel_collision">
+          <pose>-13.5 -0.35 2.125 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 0.9199999999999999 .05</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="passage_3_frame">
+      <static>true</static>
+      <link name="frame">
+        <visual name="jamb_-1">
+          <pose>15.0 -0.74 1.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 .04 2.1</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.15 .18 .2 1</diffuse>
+          </material>
+        </visual>
+        <visual name="jamb_1">
+          <pose>15.0 0.14 1.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 .04 2.1</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.15 .18 .2 1</diffuse>
+          </material>
+        </visual>
+        <visual name="lintel_visual">
+          <pose>15.0 -0.3 2.125 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 0.9199999999999999 .05</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>.15 .18 .2 1</diffuse>
+          </material>
+        </visual>
+        <collision name="lintel_collision">
+          <pose>15.0 -0.3 2.125 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.18 0.9199999999999999 .05</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="crossing_obstacle">
+      <pose>-9.5 1.75 .5 0 0 0</pose>
+      <link name="body">
+        <gravity>false</gravity>
+        <kinematic>true</kinematic>
+        <inertial>
+          <mass>10</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <iyy>1</iyy>
+            <izz>1</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="obstacle_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.4</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="obstacle_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.4</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>.9 .15 .1 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="crossing_obstacle_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>obstacle_collision</collision>
+          </contact>
+          <plugin name="crossing_obstacle_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/obstacle_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <model name="crossing_obstacle_2">
+      <pose>6.0 -1.75 .5 0 0 0</pose>
+      <link name="body">
+        <gravity>false</gravity>
+        <kinematic>true</kinematic>
+        <inertial>
+          <mass>10</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <iyy>1</iyy>
+            <izz>1</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="obstacle_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.4</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="obstacle_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.4</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>.65 .15 .8 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="crossing_obstacle_2_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>obstacle_collision</collision>
+          </contact>
+          <plugin name="crossing_obstacle_2_bumper" filename="libgazebo_ros_bumper.so">
+            <ros>
+              <remapping>bumper_states:=/obstacle_contacts</remapping>
+            </ros>
+            <frame_name>world</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+      <update_rate>30</update_rate>
+    </plugin>
+    <gui fullscreen="0">
+      <camera name="overview">
+        <pose>0 -32 35 0 .83 1.57</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+  </world>
+</sdf>

@@ -1,0 +1,8 @@
+Source: https://github.com/ros-navigation/navigation2
+Tag: 1.1.20
+Commit: a097086719c88f781aa59788eca29ac6ca5e56db
+Matches installed Humble nav2_costmap_2d version 1.1.20.
+Local patch: footprint_collision_checker.cpp gives known lethal cells priority over unknown cells across edges, including the closing edge.
+Regression: test/unit/footprint_collision_checker_test.cpp tests both raw and shared pointer specializations.
+This package is built as a workspace overlay; /opt/ros/humble is not edited.
+When upgrading Nav2, reconcile this patch against the matching upstream package version.

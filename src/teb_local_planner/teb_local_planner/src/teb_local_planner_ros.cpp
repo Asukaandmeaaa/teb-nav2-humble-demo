@@ -207,6 +207,7 @@ void TebLocalPlannerROS::configure(
   tf_ = tf;
   name_ = name;
 
+  timing_pub_ = node->create_publisher<std_msgs::msg::Float64MultiArray>("teb_compute_metrics", 20);
   initialize(node);
   visualization_ = std::make_shared<TebVisualization>(node, *cfg_);
   visualization_->on_configure();
@@ -244,6 +245,17 @@ void TebLocalPlannerROS::setPlan(const nav_msgs::msg::Path & orig_global_plan)
 geometry_msgs::msg::TwistStamped TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::msg::PoseStamped &pose,
   const geometry_msgs::msg::Twist &velocity, nav2_core::GoalChecker *goal_checker)
 {
+  const auto compute_start = std::chrono::steady_clock::now();
+  bool command_ok = false;
+  // RAII also records rejected/infeasible plans. data = [wall milliseconds, success].
+  auto record_timing = [this, compute_start, &command_ok](int *) {
+    std_msgs::msg::Float64MultiArray msg;
+    msg.data = {std::chrono::duration<double, std::milli>(
+      std::chrono::steady_clock::now() - compute_start).count(), command_ok ? 1.0 : 0.0};
+    timing_pub_->publish(msg);
+  };
+  int timing_token = 0;
+  std::unique_ptr<int, decltype(record_timing)> timing_guard(&timing_token, record_timing);
   // check if plugin initialized
   if(!initialized_)
   {
@@ -461,6 +473,7 @@ geometry_msgs::msg::TwistStamped TebLocalPlannerROS::computeVelocityCommands(con
   visualization_->publishViaPoints(via_points_);
   visualization_->publishGlobalPlan(global_plan_);
   
+  command_ok = true;
   return cmd_vel;
 }
 
@@ -1102,16 +1115,19 @@ void TebLocalPlannerROS::customViaPointsCB(const nav_msgs::msg::Path::ConstShare
 }
 
 void TebLocalPlannerROS::activate() {
+  timing_pub_->on_activate();
   visualization_->on_activate();
 
   return;
 }
 void TebLocalPlannerROS::deactivate() {
+  timing_pub_->on_deactivate();
   visualization_->on_deactivate();
 
   return;
 }
 void TebLocalPlannerROS::cleanup() {
+  timing_pub_.reset();
   visualization_->on_cleanup();
   costmap_converter_->stopWorker();
   

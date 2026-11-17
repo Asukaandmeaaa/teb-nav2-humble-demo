@@ -512,7 +512,7 @@ void TebOptimalPlanner::AddEdgesObstacles(double weight_multiplier)
             continue;
           
           // determine side (left or right) and assign obstacle if closer than the previous one
-          if (cross2d(pose_orient, obst->getCentroid()) > 0) // left
+          if (cross2d(pose_orient, obst->getCentroid() - teb_.Pose(i).position()) > 0) // left relative to this pose
           {
               if (dist < left_min_dist)
               {
@@ -1265,9 +1265,27 @@ bool TebOptimalPlanner::isTrajectoryFeasible(dwb_critics::ObstacleFootprintCriti
     }
   }
 
+  // The costmap only represents the obstacle's current position. Optimizer
+  // obstacle costs are soft constraints, so also reject intersections with
+  // tracked obstacle predictions before issuing a velocity command.
+  auto tracked_obstacles_clear = [this](const PoseSE2& pose, double time) {
+    for (const auto& obstacle : *obstacles_) {
+      if (!obstacle->isDynamic() && dynamic_cast<const CircularObstacle*>(obstacle.get()) == nullptr)
+        continue;
+      if (cfg_->robot_model->estimateSpatioTemporalDistance(pose, obstacle.get(), time) < 0.) {
+        RCLCPP_WARN_THROTTLE(node_->get_logger(), *node_->get_clock(), 1000,
+                            "Tracked obstacle intersects trajectory at +%.2f s; rejecting command", time);
+        return false;
+      }
+    }
+    return true;
+  };
+  double elapsed_time = 0.;
   geometry_msgs::msg::Pose2D pose2d;
   for (int i=0; i <= look_ahead_idx; ++i)
   {
+    if (!tracked_obstacles_clear(teb().Pose(i), elapsed_time))
+      return false;
     teb().Pose(i).toPoseMsg(pose2d);
     if (!isPoseValid(pose2d, costmap_model, footprint_spec)){
       if (visualization_)
@@ -1296,6 +1314,10 @@ bool TebOptimalPlanner::isTrajectoryFeasible(dwb_critics::ObstacleFootprintCriti
                                                            delta_rot / (n_additional_samples + 1.0));
           intermediate_pose.toPoseMsg(pose2d);
 
+          if (!tracked_obstacles_clear(intermediate_pose,
+                elapsed_time + teb_.TimeDiff(i)*(step+1.)/(n_additional_samples+1.)))
+            return false;
+
           if (!isPoseValid(pose2d, costmap_model, footprint_spec)){
             if (visualization_)
             {
@@ -1306,6 +1328,8 @@ bool TebOptimalPlanner::isTrajectoryFeasible(dwb_critics::ObstacleFootprintCriti
         }
       }
     }
+    if (i < teb_.sizeTimeDiffs())
+      elapsed_time += teb_.TimeDiff(i);
   }
   return true;
 }
@@ -1317,6 +1341,11 @@ bool TebOptimalPlanner::isPoseValid(geometry_msgs::msg::Pose2D pose2d, dwb_criti
     if ( costmap_model->scorePose(pose2d, dwb_critics::getOrientedFootprint(pose2d, footprint_spec)) < 0 ) {
       return false;
     }
+  } catch (const std::exception& error) {
+    RCLCPP_WARN_THROTTLE(node_->get_logger(), *node_->get_clock(), 1000,
+                "Infeasible footprint at (%.3f, %.3f, %.3f rad): %s",
+                pose2d.x, pose2d.y, pose2d.theta, error.what());
+    return false;
   } catch (...) {
     return false;
   }

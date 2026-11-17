@@ -1,0 +1,13 @@
+{
+  "lidar": {
+    "model": "ideal_simulated_laser",
+    "optical_xyz_in_sim_base_m": [
+      0.2,
+      0.0,
+      0.25
+    ],
+    "samples": 400,
+    "update_rate_hz": 10,
+    "max_range_m": 12.0
+  }
+}

@@ -54,6 +54,8 @@
 
 // message types
 #include <nav_msgs/msg/path.hpp>
+#include <std_msgs/msg/float64_multi_array.hpp>
+#include <chrono>
 #include <nav_msgs/msg/odometry.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
@@ -364,6 +366,7 @@ protected:
 private:
   // Definition of member variables
   rclcpp_lifecycle::LifecycleNode::WeakPtr nh_;
+  rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Float64MultiArray>::SharedPtr timing_pub_;
   rclcpp::Logger logger_{rclcpp::get_logger("TEBLocalPlanner")};
   rclcpp::Clock::SharedPtr clock_;
   rclcpp::Node::SharedPtr intra_proc_node_;

@@ -1,0 +1,27 @@
+{
+  "model": "synthetic_primitive_demo",
+  "source": "scripts/generate_demo_robot.py",
+  "physical_envelope_m": [
+    0.6,
+    0.52
+  ],
+  "footprint_with_2cm_margin": [
+    [
+      -0.32,
+      -0.28
+    ],
+    [
+      0.32,
+      -0.28
+    ],
+    [
+      0.32,
+      0.28
+    ],
+    [
+      -0.32,
+      0.28
+    ]
+  ],
+  "note": "Invented educational geometry; not a real hardware model."
+}

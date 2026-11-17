@@ -18,3 +18,23 @@ debug/
 *.bag
 *.db3
 *.mcap
+
+# Experiment output and private hardware assets must never be published.
+results/
+robot_original/
+private/
+reference/
+**/sensor_mounts.yaml
+**/sensor_manifest.json
+**/model_manifest.json
+*.stl
+*.STL
+*.step
+*.STEP
+*.stp
+*.SLDPRT
+*.SLDASM
+*.dae
+*.urdf
+*.xacro
+!src/dynamic_nav_sim/urdf/generic_robot.urdf

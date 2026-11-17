@@ -1,0 +1,64 @@
+Panels:
+- Class: rviz_common/Displays
+  Name: Displays
+Visualization Manager:
+  Class: ''
+  Global Options:
+    Fixed Frame: map
+    Background Color: 28; 34; 44
+  Displays:
+  - Class: rviz_default_plugins/Grid
+    Name: Grid
+    Enabled: true
+    Cell Size: 1.0
+  - Class: rviz_default_plugins/Map
+    Name: Online SLAM
+    Enabled: true
+    Topic:
+      Value: /map
+      Durability Policy: Transient Local
+  - Class: rviz_default_plugins/Map
+    Name: Local costmap
+    Enabled: true
+    Topic:
+      Value: /local_costmap/costmap
+    Alpha: 0.6
+    Color Scheme: costmap
+  - Class: rviz_default_plugins/LaserScan
+    Name: Laser
+    Enabled: true
+    Topic:
+      Value: /scan
+      Reliability Policy: Best Effort
+    Size (m): 0.025
+  - Class: rviz_default_plugins/Path
+    Name: Global path
+    Enabled: true
+    Topic:
+      Value: /plan
+    Color: 65; 170; 255
+  - Class: rviz_default_plugins/Path
+    Name: TEB local plan
+    Enabled: true
+    Topic:
+      Value: /local_plan
+    Color: 90; 240; 150
+  - Class: rviz_default_plugins/RobotModel
+    Name: Generic robot
+    Enabled: true
+    Description Source: Topic
+    Description Topic:
+      Value: /robot_description
+  Tools:
+  - Class: rviz_default_plugins/Interact
+  - Class: rviz_default_plugins/MoveCamera
+  - Class: rviz_default_plugins/SetGoal
+    Topic: /goal_pose
+  Views:
+    Current:
+      Class: rviz_default_plugins/TopDownOrtho
+      Name: Corridor
+      Scale: 35
+      Target Frame: map
+      X: 0
+      Y: 0

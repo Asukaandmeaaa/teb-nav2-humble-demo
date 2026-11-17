@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.8)
+project(dynamic_nav_sim)
+find_package(ament_cmake REQUIRED)
+install(DIRECTORY launch config urdf worlds DESTINATION share/${PROJECT_NAME})
+install(PROGRAMS scripts/moving_obstacle.py scripts/run_trial.py scripts/filter_self_scan.py scripts/scan_obstacle_tracker.py DESTINATION lib/${PROJECT_NAME})
+ament_package()
